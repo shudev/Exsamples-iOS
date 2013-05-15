@@ -28,6 +28,8 @@
 - (UIView *)dequeueReusableItem;
 - (CGRect)rectForItemAtIndex:(NSUInteger)index;
 
+@property(nonatomic,   assign) BOOL                avoidConflictTouchEvent;
+
 @end
 
 ////////////////////////////////////////////////////////////////////////////////

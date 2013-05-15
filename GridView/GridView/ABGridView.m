@@ -77,6 +77,8 @@
 
     _itemSize         = CGSizeMake( 70, 70 );
     _minimumColumnGap = 5;
+    
+    self.avoidConflictTouchEvent = YES;
 }
 
 /**
@@ -195,10 +197,15 @@
     {
         // UIImageView などがアイテムでもタップ検出するため、常にユーザー操作を許可する
         item.userInteractionEnabled = YES;
+        
+
 
         // http://stackoverflow.com/questions/13515539/uibutton-not-works-in-ios-5-x-everything-is-fine-in-ios-6-x
         UITapGestureRecognizer *tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapItem:)] autorelease];
-        tap.delegate = (id)self;
+        if( self.avoidConflictTouchEvent == YES ){
+            tap.delegate = (id)self;
+        }
+
 		item.gestureRecognizers     = [NSArray arrayWithObjects:tap, nil];
     }
     
@@ -217,7 +224,11 @@
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    return ! ([touch.view isKindOfClass:[UIControl class]]);
+    if( self.avoidConflictTouchEvent == YES ){
+        return ! ([touch.view isKindOfClass:[UIControl class]]);
+    }else{
+        return YES;
+    }
 }
 
 #pragma mark - Layouting
